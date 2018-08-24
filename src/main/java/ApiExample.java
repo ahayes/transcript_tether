@@ -53,6 +53,7 @@ public class ApiExample {
     protected static String VIDEOFILE = null;
     protected static String TRANSCRIPTFILE = null;
     protected static String OUTPUTFILE = null;
+    protected static String CREDENTIALFILE = null;
     
 
     /** Global instance of the scopes required by this quickstart.
@@ -107,7 +108,7 @@ public class ApiExample {
     public static YouTube getYouTubeService() {
     	Credential credential =null ;
     	try {
-         credential = Auth.authorize("videos");
+         credential = Auth.authorize(CREDENTIALFILE, "videos");
 
     	}catch(IOException e)
     	{
@@ -121,13 +122,13 @@ public class ApiExample {
     }
     
     public static void execute(String videoFile, String transcriptFile, String outputPath) {
-    	ApiExample.execute(videoFile, transcriptFile, outputPath, "client_secret.json" );
+    	ApiExample.execute(videoFile, transcriptFile, outputPath, "client_secret_other.json" );
     }
 
     public static void execute(String videoFile, String transcriptFile, String outputPath, String credential)  {
 
        // YouTube youtube = getYouTubeService();
-
+    	CREDENTIALFILE = credential;
     	VIDEOFILE = videoFile;
     	TRANSCRIPTFILE = transcriptFile;
     	
