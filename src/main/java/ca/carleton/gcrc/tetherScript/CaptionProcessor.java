@@ -93,76 +93,7 @@ public class CaptionProcessor {
     	}
     	
     } 
-    /*public static void main(String[] args) {
-
-        // This OAuth 2.0 access scope allows for full read/write access to the
-        // authenticated user's account and requires requests to use an SSL connection.
-        List<String> scopes = Lists.newArrayList("https://www.googleapis.com/auth/youtube.force-ssl");
-
-        try {
-            // Authorize the request.
-            Credential credential = Auth.authorize( "captions");
-
-            // This object is used to make YouTube Data API requests.
-            youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, credential)
-                    .setApplicationName(ApiExample.APPLICATION_NAME).build();
-
-            // Prompt the user to specify the action of the be achieved.
-            String actionString = getActionFromUser();
-            System.out.println("You chose " + actionString + ".");
-
-            Action action = Action.valueOf(actionString.toUpperCase());
-            switch (action) {
-              case UPLOAD:
-                uploadCaption(getVideoId(), getLanguage(), getName(), getCaptionFromUser());
-                break;
-              case LIST:
-                listCaptions(getVideoId());
-                break;
-              case UPDATE:
-                updateCaption(getCaptionIDFromUser(), getUpdateCaptionFromUser());
-                break;
-              case DOWNLOAD:
-                downloadCaption(getCaptionIDFromUser());
-                break;
-              case DELETE:
-                deleteCaption(getCaptionIDFromUser());
-                break;
-              default:
-                // All the available methods are used in sequence just for the sake
-                // of an example.
-
-                //Prompt the user to specify a video to upload the caption track for and
-                // a language, a name, a binary file for the caption track. Then upload the
-                // caption track with the values that are selected by the user.
-                String videoId = getVideoId();
-                uploadCaption(videoId, getLanguage(), getName(), getCaptionFromUser());
-                List<Caption> captions = listCaptions(videoId);
-                if (captions.isEmpty()) {
-                    System.out.println("Can't get video caption tracks.");
-                } else {
-                    // Retrieve the first uploaded caption track.
-                    String firstCaptionId = captions.get(0).getId();
-
-                    updateCaption(firstCaptionId, null);
-                    downloadCaption(firstCaptionId);
-                    deleteCaption(firstCaptionId);
-                }
-            }
-        } catch (GoogleJsonResponseException e) {
-            System.err.println("GoogleJsonResponseException code: " + e.getDetails().getCode()
-                    + " : " + e.getDetails().getMessage());
-            e.printStackTrace();
-
-        } catch (IOException e) {
-            System.err.println("IOException: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Throwable t) {
-            System.err.println("Throwable: " + t.getMessage());
-            t.printStackTrace();
-        }
-    }
-*/
+    
     /**
      * Deletes a caption track for a YouTube video. (captions.delete)
      *

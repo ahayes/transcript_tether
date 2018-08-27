@@ -131,8 +131,10 @@ public class ApiExample {
     	if(credential == null) {
     		
     		if(savedCredential.length() == 0) {
-    			System.out.println("Before the first time uploading, you must provide your client_secret file.");
-    		    System.exit(1);
+    			System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+    			System.out.println("Since this is the first time execution, you must provide your client_secret file.");
+    			System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+    			System.exit(1);
     		} else {
     			CREDENTIALFILE = CREDENTIALFILE_INTERNAL;
     		}
@@ -161,59 +163,7 @@ public class ApiExample {
     	
         try {
             YouTube youtube = getYouTubeService();
-/*            String mime_type = "video/*";
-            String media_filename = "Massively multi-player.mp4";
-            File media_file = new File(ApiExample.class.getResource(media_filename).toURI());
-            //final long bytes = media_file.length();
-            HashMap<String, String> parameters = new HashMap<>();
-            parameters.put("part", "snippet,status");
 
-
-            Video video = new Video();
-            VideoSnippet snippet = new VideoSnippet();
-            snippet.set("categoryId", "22");
-            snippet.set("description", "Description of uploaded video.");
-            snippet.set("title", "Test video upload");
-            VideoStatus status = new VideoStatus();
-            status.set("privacyStatus", "private");
-
-            video.setSnippet(snippet);
-            video.setStatus(status);
-
-            InputStreamContent mediaContent = new InputStreamContent(mime_type,
-            ApiExample.class.getResourceAsStream(media_filename));
-            mediaContent.setLength(media_file.length());
-            YouTube.Videos.Insert videosInsertRequest = youtube.videos().insert(parameters.get("part").toString(), video, mediaContent);
-            MediaHttpUploader uploader = videosInsertRequest.getMediaHttpUploader();
-
-
-            uploader.setDirectUploadEnabled(false);
-
-            MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
-                public void progressChanged(MediaHttpUploader uploader) throws IOException {
-                    switch (uploader.getUploadState()) {
-                        case INITIATION_STARTED:
-                            System.out.println("Initiation Started");
-                            break;
-                        case INITIATION_COMPLETE:
-                            System.out.println("Initiation Completed");
-                            break;
-                        case MEDIA_IN_PROGRESS:
-                            System.out.println("Upload in progress");
-                            System.out.println("Upload percentage: " +   uploader.getProgress() );
-                            break;
-                        case MEDIA_COMPLETE:
-                            System.out.println("Upload Completed!");
-                            break;
-                        case NOT_STARTED: 
-                            System.out.println("Upload Not Started!");
-                            break;
-                    }
-                }
-            };
-            uploader.setProgressListener(progressListener);
-            Video response = videosInsertRequest.execute();
-            String VideoId = response.getId();*/
             VideoProcessor vidp = new VideoProcessor(youtube);
             vidp.execute();
             System.out.println("VideoId is: "+ vidp.getVideoId());
