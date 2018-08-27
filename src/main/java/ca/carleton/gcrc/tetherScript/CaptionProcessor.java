@@ -460,6 +460,7 @@ public class CaptionProcessor {
       MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
           @Override
           public void progressChanged(MediaHttpUploader uploader) throws IOException {
+        	  String anim  = "=====================";
               switch (uploader.getUploadState()) {
                   // This value is set before the initiation request is
                   // sent.
@@ -469,13 +470,13 @@ public class CaptionProcessor {
                   // This value is set after the initiation request
                   //  completes.
                   case INITIATION_COMPLETE:
-                      System.out.println("Caption --Initiation Completed");
+                     // System.out.println("Caption --Initiation Completed");
                       break;
                   // This value is set after a media file chunk is
                   // uploaded.
                   case MEDIA_IN_PROGRESS:
-                      System.out.println("Caption --Upload in progress");
-                      System.out.println("Caption --Upload percentage: " + uploader.getProgress());
+                	  System.out.print("\rCaption --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) + " " );
+                      //System.out.println("Caption --Upload percentage: " + uploader.getProgress());
                       break;
                   // This value is set after the entire media file has
                   //  been successfully uploaded.

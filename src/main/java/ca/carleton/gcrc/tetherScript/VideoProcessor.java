@@ -87,16 +87,17 @@ public void execute() {
 
         MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
             public void progressChanged(MediaHttpUploader uploader) throws IOException {
+            	String anim  = "=====================";
                 switch (uploader.getUploadState()) {
                     case INITIATION_STARTED:
                         System.out.println("Video --Initiation Started");
                         break;
                     case INITIATION_COMPLETE:
-                        System.out.println("Video --Initiation Completed");
+                       // System.out.println("Video --Initiation Completed");
                         break;
                     case MEDIA_IN_PROGRESS:
-                        System.out.println("Video --Upload in progress");
-                        System.out.println("Video --Upload percentage: " +   uploader.getProgress() );
+                        //System.out.println("Video --Upload in progress");
+                        System.out.print("\rVideo --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) + " " );
                         break;
                     case MEDIA_COMPLETE:
                         System.out.println("Video --Upload Completed!");

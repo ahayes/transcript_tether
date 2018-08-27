@@ -126,6 +126,7 @@ public class ApiExample {
    
 
     protected static void execute(String videoFile, String transcriptFile, String outputPath, String credential)  {
+   
     	File savedCredential = new File(CREDENTIALFILE_INTERNAL);
     	if(credential == null) {
     		
@@ -149,9 +150,11 @@ public class ApiExample {
     	String outputFileDir = outputPath;
 		if(outputPath.charAt(outputPath.length()-1) != '/')
 			outputFileDir += '/';
-		String inputNameWithoutExt =  VIDEOFILE.substring(VIDEOFILE.lastIndexOf('/')+1,VIDEOFILE.lastIndexOf('.'));
-		OUTPUTFILE = outputFileDir + inputNameWithoutExt + ".srt";
+		String tmpfile = new File(VIDEOFILE).getName();
 		
+		String inputNameWithoutExt =  tmpfile.substring(0,tmpfile.lastIndexOf('.'));
+		OUTPUTFILE = outputFileDir + inputNameWithoutExt + ".srt";
+    	
     	
     	
     	
@@ -213,7 +216,7 @@ public class ApiExample {
             String VideoId = response.getId();*/
             VideoProcessor vidp = new VideoProcessor(youtube);
             vidp.execute();
-            System.out.println("VIDEOID is: "+ vidp.getVideoId());
+            System.out.println("VideoId is: "+ vidp.getVideoId());
             CaptionProcessor capp = new CaptionProcessor(youtube);
             
             Caption uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(TRANSCRIPTFILE) );
