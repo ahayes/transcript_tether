@@ -1,6 +1,8 @@
+package ca.carleton.gcrc.tetherScript;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -58,7 +60,7 @@ public void execute() {
 	try {
         String mime_type = "video/*";
         String media_filename = ApiExample.VIDEOFILE; //"Massively multi-player.mp4";
-        File media_file = new File(ApiExample.class.getResource(media_filename).toURI());
+        File media_file = new File(media_filename);
         //final long bytes = media_file.length();
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("part", "snippet,status");
@@ -75,8 +77,7 @@ public void execute() {
         video.setSnippet(snippet);
         video.setStatus(status);
 
-        InputStreamContent mediaContent = new InputStreamContent(mime_type,
-        ApiExample.class.getResourceAsStream(media_filename));
+        InputStreamContent mediaContent = new InputStreamContent(mime_type,new FileInputStream(media_file));
         mediaContent.setLength(media_file.length());
         YouTube.Videos.Insert videosInsertRequest = youtube.videos().insert(parameters.get("part").toString(), video, mediaContent);
         MediaHttpUploader uploader = videosInsertRequest.getMediaHttpUploader();

@@ -1,10 +1,24 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = 'Command'
+mainClassName = 'ca.carleton.gcrc.tetherScript.Command'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-version = '1.0'
+version = '0.1.0'
+
+task fatJar (type: Jar) {
+	manifest {
+			attributes 'Main-Class': 'ca.carleton.gcrc.tetherScript.Command',
+			'Implementation-Version': version,
+			'Implementation-Title': 'Teh Jar'
+		}
+	
+	baseName = 'teh'
+	from {configurations.compile.collect {it.isDirectory() ? it: zipTree(it)}}
+	with jar
+	
+}
+
 
 repositories {
     mavenCentral()
@@ -14,6 +28,8 @@ dependencies {
     compile 'com.google.api-client:google-api-client:1.22.0'
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.22.0'
     compile 'com.google.apis:google-api-services-youtube:v3-rev182-1.22.0'
-    compile 'com.github.pcj:google-options:1.0.0'
+    // https://mvnrepository.com/artifact/commons-cli/commons-cli
+	compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+
     
 }

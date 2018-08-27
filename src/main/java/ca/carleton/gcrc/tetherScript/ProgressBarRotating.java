@@ -1,3 +1,4 @@
+package ca.carleton.gcrc.tetherScript;
 class ProgressBarRotating extends Thread {
 	  boolean showProgress = true;
 	  public void run() {

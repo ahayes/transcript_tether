@@ -1,3 +1,4 @@
+package ca.carleton.gcrc.tetherScript;
 // Sample Java code for user authorization
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -39,7 +40,7 @@ public class ApiExample {
 
     /** Directory to store user credentials for this application. */
     private static final java.io.File DATA_STORE_DIR = new java.io.File(
-    System.getProperty("user.home"), ".credentials/java-youtube-api-tests");
+    System.getProperty("user.home"), ".credentials/java-youtube-api");
 
     /** Global instance of the {@link FileDataStoreFactory}. */
     //private static FileDataStoreFactory DATA_STORE_FACTORY;
@@ -54,6 +55,7 @@ public class ApiExample {
     protected static String TRANSCRIPTFILE = null;
     protected static String OUTPUTFILE = null;
     protected static String CREDENTIALFILE = null;
+    protected static final String CREDENTIALFILE_INTERNAL =  System.getProperty("user.home") + "/.secret/client_secret_other.json";
     
 
     /** Global instance of the scopes required by this quickstart.
@@ -121,14 +123,25 @@ public class ApiExample {
             .build();
     }
     
-    public static void execute(String videoFile, String transcriptFile, String outputPath) {
-    	ApiExample.execute(videoFile, transcriptFile, outputPath, "client_secret_other.json" );
-    }
+   
 
-    public static void execute(String videoFile, String transcriptFile, String outputPath, String credential)  {
-
+    protected static void execute(String videoFile, String transcriptFile, String outputPath, String credential)  {
+    	File savedCredential = new File(CREDENTIALFILE_INTERNAL);
+    	if(credential == null) {
+    		
+    		if(savedCredential.length() == 0) {
+    			System.out.println("Before the first time uploading, you must provide your client_secret file.");
+    		    System.exit(1);
+    		} else {
+    			CREDENTIALFILE = CREDENTIALFILE_INTERNAL;
+    		}
+    		
+    	} else {
+    		CREDENTIALFILE = credential;
+    		
+    	}
        // YouTube youtube = getYouTubeService();
-    	CREDENTIALFILE = credential;
+    	
     	VIDEOFILE = videoFile;
     	TRANSCRIPTFILE = transcriptFile;
     	
@@ -136,8 +149,8 @@ public class ApiExample {
     	String outputFileDir = outputPath;
 		if(outputPath.charAt(outputPath.length()-1) != '/')
 			outputFileDir += '/';
-		String inputNameWithoutExt =  VIDEOFILE.substring(VIDEOFILE.lastIndexOf('/'),VIDEOFILE.lastIndexOf('/'));
-		OUTPUTFILE = outputFileDir + inputNameWithoutExt + "srt";
+		String inputNameWithoutExt =  VIDEOFILE.substring(VIDEOFILE.lastIndexOf('/')+1,VIDEOFILE.lastIndexOf('.'));
+		OUTPUTFILE = outputFileDir + inputNameWithoutExt + ".srt";
 		
     	
     	
@@ -203,7 +216,7 @@ public class ApiExample {
             System.out.println("VIDEOID is: "+ vidp.getVideoId());
             CaptionProcessor capp = new CaptionProcessor(youtube);
             
-            Caption uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(ApiExample.class.getResource(TRANSCRIPTFILE).toURI()) );
+            Caption uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(TRANSCRIPTFILE) );
             String captionId = uploadedCaptionResponse.getId();
             System.out.println("Waiting for sync...");
             ProgressBarRotating pb1 = new ProgressBarRotating();

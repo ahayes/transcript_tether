@@ -1,3 +1,4 @@
+package ca.carleton.gcrc.tetherScript;
 
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -15,8 +16,11 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,6 +45,7 @@ public class Auth {
      * This is the directory that will be used under the user's home directory where OAuth tokens will be stored.
      */
     private static final String CREDENTIALS_DIRECTORY = ".credentials";
+    
 
     private static final Collection<String> SCOPES = Arrays.asList("https://www.googleapis.com/auth/youtube.force-ssl");
     /**
@@ -52,7 +57,13 @@ public class Auth {
     public static Credential authorize( String client_secret_json, String credentialDatastore) throws IOException {
 
         // Load client secrets.
-        Reader clientSecretReader = new InputStreamReader(new FileInputStream("src/main/java/"+ client_secret_json));
+    	if(!client_secret_json.equals( ApiExample.CREDENTIALFILE_INTERNAL)) {
+     
+    		overrideOldInternalCred(ApiExample.CREDENTIALFILE_INTERNAL, client_secret_json);
+    		
+    	}
+    	
+    	Reader clientSecretReader = new InputStreamReader(new FileInputStream(ApiExample.CREDENTIALFILE_INTERNAL ));
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
 
         // Checks that the defaults have been replaced (Default = "Enter X here").
@@ -78,4 +89,29 @@ public class Auth {
         // Authorize.
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
+    
+    private static void overrideOldInternalCred(String dst, String srt) throws IOException{
+    	   InputStream is = null;
+    	    OutputStream os = null;
+    	    try {
+    	        is = new FileInputStream(srt);
+    	        File folder = new File(System.getProperty("user.home") + "/.secret" );
+    	        if( !folder.exists())
+    	        	folder.mkdir();
+    	        os = new FileOutputStream(dst,false);
+    	        byte[] buffer = new byte[1024];
+    	        int length;
+    	        while ((length = is.read(buffer)) > 0) {
+    	            os.write(buffer, 0, length);
+    	        }
+    	    }catch(IOException e) {
+    	    	e.printStackTrace();
+    	    }
+    	    finally {
+    	        is.close();
+    	        os.close();
+    	    }
+    }
 }
+
+	
