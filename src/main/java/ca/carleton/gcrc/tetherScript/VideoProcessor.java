@@ -87,7 +87,8 @@ public void execute() {
 
         MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
             public void progressChanged(MediaHttpUploader uploader) throws IOException {
-            	String anim  = "=====================";
+            	String anim  = ">>>>>>>>>>>>>>>>>>>";
+            	                
                 switch (uploader.getUploadState()) {
                     case INITIATION_STARTED:
                         System.out.println("Video --Initiation Started");
@@ -97,10 +98,11 @@ public void execute() {
                         break;
                     case MEDIA_IN_PROGRESS:
                         //System.out.println("Video --Upload in progress");
-                        System.out.print("\rVideo --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) + " " );
+                        System.out.print("\rVideo --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
                         break;
                     case MEDIA_COMPLETE:
-                        System.out.println("Video --Upload Completed!");
+                    	System.out.print("\rVideo --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
+                        System.out.println("| Video --Upload Completed!");
                         break;
                     case NOT_STARTED: 
                         System.out.println("Video --Upload Not Started!");
@@ -111,6 +113,9 @@ public void execute() {
         uploader.setProgressListener(progressListener);
         Video response = videosInsertRequest.execute();
         VideoId = response.getId();
+//TODO ADD video duplication checking
+
+        //System.out.println("UPLOADINFO_---- ");
 	}catch (GoogleJsonResponseException e) {
         e.printStackTrace();
         System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());

@@ -305,32 +305,35 @@ public class CaptionProcessor {
     protected Caption listCaption(String videoId, String captionId) throws IOException {
       // Call the YouTube Data API's captions.list method to
       // retrieve video caption tracks.
-      CaptionListResponse captionListResponse = youtube.captions().
+    	CaptionListResponse captionListResponse = null;
+    	List<Caption> captions = null;
+      try {
+    	  captionListResponse = youtube.captions().
           list("snippet", videoId).execute();
-
-      List<Caption> captions = captionListResponse.getItems();
+      
+    	  captions = captionListResponse.getItems();
+      }catch (GoogleJsonResponseException e) {
+    	  System.err.println(e.getDetails());
+    	  
+    	  System.exit(1);
+      }
       Caption captionRes = null;
       // Print information from the API response.
       
       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
       LocalDateTime now = LocalDateTime.now();
       
-      System.out.print("\r                  Last Check at: "+ dtf.format(now));
-      CaptionSnippet snippet;
+      System.out.print("\r                      Last Check at: "+ dtf.format(now));
       for (Caption caption : captions) {
     	  if(caption.getId().equals(captionId)) {
     		  
     		  captionRes = caption;
-    		 /* 
-    		  System.out.println("  - ID: " + caption.getId());
-    		  System.out.println("  - Name: " + snippet.getName());
-    		  System.out.println("  - Language: " + snippet.getLanguage());
-    		  System.out.println("  - Status: " + snippet.getStatus());
-    		  System.out.println("\n-------------------------------------------------------------\n");*/
+    		
     	  }
       }
 
       return captionRes;
+
     }
 
     /**
@@ -391,7 +394,7 @@ public class CaptionProcessor {
       MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
           @Override
           public void progressChanged(MediaHttpUploader uploader) throws IOException {
-        	  String anim  = "=====================";
+        	  String anim  = ">>>>>>>>>>>>>>>>>>>";
               switch (uploader.getUploadState()) {
                   // This value is set before the initiation request is
                   // sent.
@@ -412,7 +415,8 @@ public class CaptionProcessor {
                   // This value is set after the entire media file has
                   //  been successfully uploaded.
                   case MEDIA_COMPLETE:
-                      System.out.println("Caption --Upload Completed!");
+                	  System.out.print("\rCaption --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
+                      System.out.println("| Caption --Upload Completed!");
                       break;
                   // This value indicates that the upload process has
                   //  not started yet.

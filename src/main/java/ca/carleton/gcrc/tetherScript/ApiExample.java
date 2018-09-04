@@ -35,6 +35,17 @@ import java.util.List;
 
 public class ApiExample {
 
+	
+	private static final String CREDENTIAL_NOTIFY = 
+			"The credential file can be created and retrieved at: \n" 
+			+
+			"\"https://console.cloud.google.com/apis/credentials\" "
+			+
+			"\n \"Create Credentials\" ==> \"OAuth client ID\" ==> \"Other\" ==> \"Create\""
+			+
+			"\nDownload the credential file to your local folder. "
+			+ 
+			"\nExecute this program again with option: '-c {path_to_credential_file}'. \n";
     /** Application name. */
     public static final String APPLICATION_NAME = "API Sample";
 
@@ -78,30 +89,6 @@ public class ApiExample {
     }
 
     /**
-     * Creates an authorized Credential object.
-     * @return an authorized Credential object.
-     * @throws IOException
-     */
-   /* public static Credential authorize() throws IOException {
-        // Load client secrets.
-        InputStream in = ApiExample.class.getResourceAsStream("/client_secret_other.json");
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader( in ));
-
-        // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-        HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-            .setDataStoreFactory(DATA_STORE_FACTORY)
-            .setAccessType("offline")
-            .build();
-        Credential credential =
-        		new AuthorizationCodeInstalledApp(
-        flow, new LocalServerReceiver()).authorize("user");
-        System.out.println(
-            "Credentials saved to " + DATA_STORE_DIR.getAbsolutePath());
-        return credential;
-    }
-*/
-    /**
      * Build and return an authorized API client service, such as a YouTube
      * Data API client service.
      * @return an authorized API client service
@@ -125,15 +112,19 @@ public class ApiExample {
     
    
 
-    protected static void execute(String videoFile, String transcriptFile, String outputPath, String credential)  {
+    protected static void execute(String videoFile, 
+    		String transcriptFile, String outputPath, 
+    		String credential,
+    		String lang)  {
    
     	File savedCredential = new File(CREDENTIALFILE_INTERNAL);
     	if(credential == null) {
     		
     		if(savedCredential.length() == 0) {
-    			System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
-    			System.out.println("Since this is the first time execution, you must provide your client_secret file.");
-    			System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
+    			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    			System.out.println("\nYou need a \"google api credential\" to execute this program, please provide your client_secret file (.json).");
+    			System.out.println(CREDENTIAL_NOTIFY);
+    			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     			System.exit(1);
     		} else {
     			CREDENTIALFILE = CREDENTIALFILE_INTERNAL;
@@ -168,9 +159,24 @@ public class ApiExample {
             vidp.execute();
             System.out.println("VideoId is: "+ vidp.getVideoId());
             CaptionProcessor capp = new CaptionProcessor(youtube);
+            LANGUAGE curLanguage = LANGUAGE.valueOf(lang.toUpperCase());
+            Caption uploadedCaptionResponse =null;
+            switch(curLanguage) {
+            case EN:
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	break;
+            case FR:
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "fr","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	break;
+            default:
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	
             
-            Caption uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            }
+            
             String captionId = uploadedCaptionResponse.getId();
+            System.out.println("The google synchronization engine is running, this may take a while");
+            System.out.println("Please be patient...");
             System.out.println("Waiting for sync...");
             ProgressBarRotating pb1 = new ProgressBarRotating();
             pb1.start();
@@ -189,7 +195,7 @@ public class ApiExample {
             				break;
             			}
             		}
-                 //System.out.println(response);
+         
             				
               
              
@@ -201,8 +207,12 @@ public class ApiExample {
             //captionId = "rxIHgFycrpqyzrUThEWut_ZbOMLC84iHroMGBZFbeadcSpjZbQVdlFXCOupU0rUh";
             // CaptionProcessor capp = new CaptionProcessor(youtube);
             capp.downloadCaption(captionId);
-            System.out.println("Download the transcipt successfully");
-            			 
+            System.out.println("Download the timecoded transcript successfully");
+            //https://www.youtube.com/timedtext_editor?v=5WRBROTmW4I&lang=en&name=
+            System.out.println("The transcript can be fine-tuned at:"+
+            "\n https://www.youtube.com/timedtext_editor?v="+vidp.getVideoId()+"&lang=en&name="
+            +
+            "plain_transcript_n2&kind=&contributor_id=0&bl=vmp&action_view_track=1&sow=yes&ui=se");
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
@@ -210,5 +220,10 @@ public class ApiExample {
             t.printStackTrace();
         }
     }
+    
+    private enum LANGUAGE  {
+    		EN,
+    		FR	
+    };
 }
 

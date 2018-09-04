@@ -31,7 +31,17 @@ public class Command {
 		options.addOption(outputdir);
 		options.addOption(credential);
 		String header = "Transcript tethering tool. \n\n";
-		String footer = "\n ";
+		String footer = "\nYou need a google api to execute this program, please provide your client_secret file (.json)."
+		+
+		"\nThe credential file can be created and retrieved at: \n" 
+		+
+		"\"https://console.cloud.google.com/apis/credentials\" "
+		+
+		"\n \"Create Credentials\" ==> \"OAuth client ID\" ==> \"Other\" ==> \"Create\""
+		+
+		"\nDownload the credential file to your local folder. "
+		+ 
+		"\nExecute this program again with option: '-c {path_to_credential_file}'. \n";
 		
 		HelpFormatter formatter = new HelpFormatter();
 		
@@ -55,7 +65,12 @@ public class Command {
 				System.out.format("|--> The output folder is at <%s>\n", line.getOptionValue("output_path"));
 			if(line.hasOption('c') && line.getOptionValue("credential")!= null)
 				System.out.format("|--> The credential file is located at <%s>\n", line.getOptionValue("credential"));   
-			ApiExample.execute(line.getOptionValue("video_file"),line.getOptionValue("transcript_file"),line.getOptionValue("output_path",System.getProperty("user.dir")),line.getOptionValue("credential"));
+			
+			ApiExample.execute(line.getOptionValue("video_file")
+					,line.getOptionValue("transcript_file")
+					,line.getOptionValue("output_path",System.getProperty("user.dir"))
+					,line.getOptionValue("credential")
+					,line.getOptionValue("language","en"));
 			
 		} catch (org.apache.commons.cli.ParseException e) {
 			// TODO Auto-generated catch block
