@@ -97,7 +97,7 @@ public class ApiExample {
     public static YouTube getYouTubeService() {
     	Credential credential =null ;
     	try {
-         credential = Auth.authorize(CREDENTIALFILE, "videos");
+         credential = Auth.authorize(CREDENTIALFILE, "tether_transcript");
 
     	}catch(IOException e)
     	{
