@@ -13,4 +13,8 @@ The executable is located inside {PROJECT_FOLDER}/build/lib/
 # Usage
 ------
 
-> java -
+> java -jar teh-x.y.z.jar --Options
+
+## Example
+
+> java -jar teh-x.y.z.jar -v 'test.mp4' -t 'test.txt' -c 'HOME/.client_secret.json'
