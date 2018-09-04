@@ -12,7 +12,7 @@ To create a standalone executable java program:
 
 The executable is located inside {PROJECT_FOLDER}/build/lib/
 
-#Running_prerequisition
+# Running_prerequisition
 
 [Java SE Runtime Environment 8 [Downloads](http://www.oracle.com/technetwork/java/javase/jre8-downloads-2133155.html)]<br>
 [Setting JAVA_HOME environment variables](https://www.mkyong.com/java/how-to-set-java_home-on-windows-10/)
