@@ -122,7 +122,7 @@ public class ApiExample {
     		
     		if(savedCredential.length() == 0) {
     			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    			System.out.println("\nYou need a \"google credential\" to execute this program, please provide your client_secret file (.json).");
+    			System.out.println("\nYou need a \"google credential\" to execute this program, please provide your credential file (.json).");
     			System.out.println(CREDENTIAL_NOTIFY);
     			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     			System.exit(1);

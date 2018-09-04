@@ -32,7 +32,7 @@ public class Command {
 		options.addOption(credential);
 		options.addOption(language);
 		String header = "Transcript tethering tool. \n\n";
-		String footer = "\nYou need a google credential to execute this program, please provide your client_secret file (.json)."
+		String footer = "\nYou need a google credential to execute this program, please provide your credential file (.json)."
 		+
 		"\nThe credential file can be created and retrieved at: \n" 
 		+
