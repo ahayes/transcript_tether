@@ -19,18 +19,18 @@ import org.apache.commons.cli.Options;
 public class Command {
 
 	public static void main(String[] args) {
-	    
-		Option videofile = Option.builder("v").required(true).longOpt("video").desc("the video file for tethering.").hasArg().build();
-		Option transcriptfile = Option.builder("t").required(true).longOpt("transcript").desc("the transcript file for the video.").hasArg().build();
-		Option outputdir = Option.builder("o").required(false).longOpt("output").desc("the output directory for [target].srt, the default place is the current folder.").hasArg().build();
-		Option credential = Option.builder("c").required(false).longOpt("credential").desc("use given file for credential.").hasArg().build();
+		
+		Option videofile = Option.builder("v").required(true).longOpt("video_file").desc("The video file for tethering.").hasArg().build();
+		Option transcriptfile = Option.builder("t").required(true).longOpt("transcript_file").desc("The transcript file for the video.").hasArg().build();
+		Option outputdir = Option.builder("o").required(false).longOpt("output_path").desc("The output directory for [target].srt, the default place is the current folder.").hasArg().build();
+		Option credential = Option.builder("c").required(false).longOpt("credential").desc("Provide credential file for google api.").hasArg().build();
 		
 		Options options = new Options();
 		options.addOption(videofile);
 		options.addOption(transcriptfile);
 		options.addOption(outputdir);
 		options.addOption(credential);
-		String header = "Transcript tethering tool. \n";
+		String header = "Transcript tethering tool. \n\n";
 		String footer = "\n ";
 		
 		HelpFormatter formatter = new HelpFormatter();
@@ -45,17 +45,17 @@ public class Command {
 			
 			CommandLine line = parser.parse(options, args);
 			
-			if(line.hasOption("video") && line.getOptionValue("video")!= null &&
-					line.hasOption("transcript") && line.getOptionValue("transcript")!= null) {
-		    	System.out.format("|--> The video file is located at <%s>\n", line.getOptionValue("video"));
-		    	System.out.format("|--> The transcript file is located at <%s>\n", line.getOptionValue("transcript"));   
+			if(line.hasOption('v') && line.getOptionValue("video_file")!= null &&
+					line.hasOption('t') && line.getOptionValue("transcript_file")!= null) {
+				System.out.format("|--> The video file is located at <%s>\n", line.getOptionValue("video_file"));
+				System.out.format("|--> The transcript file is located at <%s>\n", line.getOptionValue("transcript_file"));   
 			}
 			
-			if(line.hasOption("output") && line.getOptionValue("output")!= null)
-		    	System.out.format("|--> The output folder is at <%s>\n", line.getOptionValue("output"));
-		    if(line.hasOption("credential") && line.getOptionValue("credential")!= null)
-		    	System.out.format("|--> The credential file is located at <%s>\n", line.getOptionValue("credential"));   
-			ApiExample.execute(line.getOptionValue("video"),line.getOptionValue("transcript"),line.getOptionValue("output",System.getProperty("user.dir")),line.getOptionValue("credential"));
+			if(line.hasOption('o') && line.getOptionValue("output_path")!= null)
+				System.out.format("|--> The output folder is at <%s>\n", line.getOptionValue("output_path"));
+			if(line.hasOption('c') && line.getOptionValue("credential")!= null)
+				System.out.format("|--> The credential file is located at <%s>\n", line.getOptionValue("credential"));   
+			ApiExample.execute(line.getOptionValue("video_file"),line.getOptionValue("transcript_file"),line.getOptionValue("output_path",System.getProperty("user.dir")),line.getOptionValue("credential"));
 			
 		} catch (org.apache.commons.cli.ParseException e) {
 			// TODO Auto-generated catch block
@@ -66,9 +66,9 @@ public class Command {
 		
 	
 		
-	    
-	    
-	  }
+		
+		
+		}
 
 	
 	
