@@ -15,15 +15,12 @@ The executable is located inside {PROJECT_FOLDER}/build/lib/
 # Usage
 ------
 
-> java -jar teh-x.y.z.jar
-> -c,--credential <arg>        Provide credential file for google api.
-> -l,--language <arg>          (Optional) Indicate the language used in the
-                              video [en|fr]
-> -o,--output_path <arg>       (Optional) The output directory for
-                              [target].srt, the default place is the
-                              current folder.
-> -t,--transcript_file <arg>   The transcript file for the video.
-> -v,--video_file <arg>        The video file for tethering.
+> java -jar teh-x.y.z.jar<br>
+> -c,    --credential <arg>    Provide credential file for google api.<br>
+> -l,--language <arg>          (Optional) Indicate the language used in the video [en|fr].<br>
+> -o,--output_path <arg>       (Optional) The output directory for [target].srt, the default place is the current folder.<br>
+>-t,--transcript_file <arg>   The transcript file for the video.<br>
+>-v,--video_file <arg>        The video file for tethering.
 
 
 ## Example
