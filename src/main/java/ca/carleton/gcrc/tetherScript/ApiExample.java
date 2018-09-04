@@ -122,7 +122,7 @@ public class ApiExample {
     		
     		if(savedCredential.length() == 0) {
     			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    			System.out.println("\nYou need a \"google api credential\" to execute this program, please provide your client_secret file (.json).");
+    			System.out.println("\nYou need a \"google credential\" to execute this program, please provide your client_secret file (.json).");
     			System.out.println(CREDENTIAL_NOTIFY);
     			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     			System.exit(1);
@@ -210,9 +210,9 @@ public class ApiExample {
             System.out.println("Download the timecoded transcript successfully");
             //https://www.youtube.com/timedtext_editor?v=5WRBROTmW4I&lang=en&name=
             System.out.println("The transcript can be fine-tuned at:"+
-            "\n https://www.youtube.com/timedtext_editor?v="+vidp.getVideoId()+"&lang=en&name="
+            "\n \'https://www.youtube.com/timedtext_editor?v="+vidp.getVideoId()+"&lang=en&name="
             +
-            "plain_transcript_n2&kind=&contributor_id=0&bl=vmp&action_view_track=1&sow=yes&ui=se");
+            "plain_transcript_n2&kind=&contributor_id=0&bl=vmp&action_view_track=1&sow=yes&ui=se\'");
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());

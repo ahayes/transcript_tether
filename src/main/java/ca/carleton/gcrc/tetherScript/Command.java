@@ -22,16 +22,17 @@ public class Command {
 		
 		Option videofile = Option.builder("v").required(true).longOpt("video_file").desc("The video file for tethering.").hasArg().build();
 		Option transcriptfile = Option.builder("t").required(true).longOpt("transcript_file").desc("The transcript file for the video.").hasArg().build();
-		Option outputdir = Option.builder("o").required(false).longOpt("output_path").desc("The output directory for [target].srt, the default place is the current folder.").hasArg().build();
+		Option outputdir = Option.builder("o").required(false).longOpt("output_path").desc("(Optional) The output directory for [target].srt, the default place is the current folder.").hasArg().build();
 		Option credential = Option.builder("c").required(false).longOpt("credential").desc("Provide credential file for google api.").hasArg().build();
-		
+		Option language = Option.builder("l").required(false).longOpt("language").desc("(Optional) Indicate the language used in the video [en|fr]").hasArg().build();
 		Options options = new Options();
 		options.addOption(videofile);
 		options.addOption(transcriptfile);
 		options.addOption(outputdir);
 		options.addOption(credential);
+		options.addOption(language);
 		String header = "Transcript tethering tool. \n\n";
-		String footer = "\nYou need a google api to execute this program, please provide your client_secret file (.json)."
+		String footer = "\nYou need a google credential to execute this program, please provide your client_secret file (.json)."
 		+
 		"\nThe credential file can be created and retrieved at: \n" 
 		+
