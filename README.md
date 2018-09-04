@@ -6,7 +6,7 @@ Cross-platform java library and command-line utility to generate a subtitle file
 # Release
 -------
 
-To create a new executable java program:
+To create a standalone executable java program:
 
 > gradle fatJar
 
@@ -15,7 +15,16 @@ The executable is located inside {PROJECT_FOLDER}/build/lib/
 # Usage
 ------
 
-> java -jar teh-x.y.z.jar --Options
+> java -jar teh-x.y.z.jar
+> -c,--credential <arg>        Provide credential file for google api.
+> -l,--language <arg>          (Optional) Indicate the language used in the
+                              video [en|fr]
+> -o,--output_path <arg>       (Optional) The output directory for
+                              [target].srt, the default place is the
+                              current folder.
+> -t,--transcript_file <arg>   The transcript file for the video.
+> -v,--video_file <arg>        The video file for tethering.
+
 
 ## Example
 
