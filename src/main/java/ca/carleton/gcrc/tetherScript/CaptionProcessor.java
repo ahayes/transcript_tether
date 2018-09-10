@@ -314,7 +314,7 @@ public class CaptionProcessor {
     	  captions = captionListResponse.getItems();
       }catch (GoogleJsonResponseException e) {
     	  System.err.println(e.getDetails());
-    	  
+    	  System.err.println("You may have uploaded the same video, please double check on youtube video manager");
     	  System.exit(1);
       }
       Caption captionRes = null;
@@ -326,9 +326,7 @@ public class CaptionProcessor {
       System.out.print("\r                      Last Check at: "+ dtf.format(now));
       for (Caption caption : captions) {
     	  if(caption.getId().equals(captionId)) {
-    		  
     		  captionRes = caption;
-    		
     	  }
       }
 
