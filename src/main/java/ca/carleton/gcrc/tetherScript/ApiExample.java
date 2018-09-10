@@ -149,13 +149,9 @@ public class ApiExample {
 			outputFileDir += '/';
 		String tmpfile = new File(VIDEOFILE).getName();
 		
-		String inputNameWithoutExt =  tmpfile.substring(0,tmpfile.lastIndexOf('.'));
+		String inputNameWithoutExt = tmpfile.lastIndexOf('.')>0?  tmpfile.substring(0,tmpfile.lastIndexOf('.')) : tmpfile ;
 		OUTPUTFILE = outputFileDir + inputNameWithoutExt + ".srt";
-    	
-    	
-    	
-    	
-    	
+
         try {
             YouTube youtube = getYouTubeService();
 
@@ -172,6 +168,21 @@ public class ApiExample {
             case FR:
             	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "fr","plain_transcript_n2",new File(TRANSCRIPTFILE) );
             	break;
+            case ES:
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "es","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	break;
+            case IT:
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "it","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	break;
+            case ZHCN:
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "zh-CN","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+        		break;
+            case DE:
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "de","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+        		break;
+            case JA:
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "ja","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+        		break;
             default:
             	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(TRANSCRIPTFILE) );
             	
@@ -253,7 +264,14 @@ public class ApiExample {
     }
     private enum LANGUAGE  {
     		EN,
-    		FR	
+    		FR,
+    		DE,
+    		JA,
+    		ZHCN,
+    		IT,
+    		ES
+    		
+    		
     };
 }
 

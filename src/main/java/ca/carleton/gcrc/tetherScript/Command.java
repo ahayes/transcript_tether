@@ -24,7 +24,7 @@ public class Command {
 		Option transcriptfile = Option.builder("t").required(true).longOpt("transcript_input").desc("(Optional) The transcript file for the video.").hasArg().build();
 		Option outputdir = Option.builder("o").required(false).longOpt("output_path").desc("(Optional) The output directory for [target].srt, the default place is the current folder.").hasArg().build();
 		Option credential = Option.builder("c").required(false).longOpt("credential").desc("Provide credential file for google api.").hasArg().build();
-		Option language = Option.builder("l").required(false).longOpt("language").desc("(Optional) Indicate the language used in the video [en|fr]").hasArg().build();
+		Option language = Option.builder("l").required(false).longOpt("language").desc("(Optional) Indicate the language used in the video [en|fr|de|ja|es|it|zhcn]").hasArg().build();
 		Option recursiveTethering = Option.builder("r").required(false).longOpt("recursive").desc("If provided, recursive tethering all the video and transcript(same-name) in provided folder")
 				.hasArg().build();
 		
@@ -76,7 +76,7 @@ public class Command {
 		} catch (org.apache.commons.cli.ParseException e) {
 			// TODO Auto-generated catch block
 			System.err.println("Parsing failed. Reason: " + e.getMessage());
-			formatter.printHelp("teh",header,  options, footer, true);
+			formatter.printHelp("teh",header,  options, "\n", true);
 		}
 		
 		
