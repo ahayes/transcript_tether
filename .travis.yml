@@ -5,4 +5,4 @@ jdk:
 before_script:
 - chmod a+x gradlew
 
-script: ./gradlew fatJar
+script: ./gradlew exec
