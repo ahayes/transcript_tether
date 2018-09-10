@@ -20,13 +20,16 @@ import com.google.api.services.youtube.YouTubeScopes;
 import com.google.api.services.youtube.model.*;
 import com.google.api.services.youtube.YouTube;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -125,6 +128,7 @@ public class ApiExample {
     			System.out.println("\nYou need a \"google credential\" to execute this program, please provide your credential file (.json).");
     			System.out.println(CREDENTIAL_NOTIFY);
     			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    			ApiExample.openInBrowser("https://console.cloud.google.com/apis/credentials");
     			System.exit(1);
     		} else {
     			CREDENTIALFILE = CREDENTIALFILE_INTERNAL;
@@ -209,10 +213,13 @@ public class ApiExample {
             capp.downloadCaption(captionId);
             System.out.println("Download the timecoded transcript successfully");
             //https://www.youtube.com/timedtext_editor?v=5WRBROTmW4I&lang=en&name=
-            System.out.println("The transcript can be fine-tuned at:"+
-            "\n \'https://www.youtube.com/timedtext_editor?v="+vidp.getVideoId()+"&lang=en&name="
-            +
-            "plain_transcript_n2&kind=&contributor_id=0&bl=vmp&action_view_track=1&sow=yes&ui=se\'");
+            
+            
+            String finalTuneUrl = "https://www.youtube.com/timedtext_editor?v="+vidp.getVideoId()+"&lang=en&name="
+                    + "plain_transcript_n2&kind=&contributor_id=0&bl=vmp&action_view_track=1&sow=yes&ui=se";
+            System.out.println("The transcript can be fine-tuned at:"+ "\""+ finalTuneUrl + "\"");
+           
+            openInBrowser(finalTuneUrl);
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
@@ -220,7 +227,30 @@ public class ApiExample {
             t.printStackTrace();
         }
     }
-    
+    private static void openInBrowser(String url) {
+    	
+    	try {
+    		URI uri = new URL(url).toURI();
+    		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+            if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                desktop.browse(uri);
+            } else {
+                String os = System.getProperty("os.name").toLowerCase();
+                Runtime rt = Runtime.getRuntime();
+                if(os.indexOf("win") >= 0)
+                	rt.exec("start " + url);
+                else if(os.indexOf("mac") >= 0)
+                	rt.exec("open " + url);
+                else if(os.indexOf("nix") >=0 || os.indexOf("nux") >=0)
+                	rt.exec("xdg-open " + url);
+            }
+ 
+    		
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    }
     private enum LANGUAGE  {
     		EN,
     		FR	
