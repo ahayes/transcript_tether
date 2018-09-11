@@ -20,7 +20,7 @@ public class Command {
 
 	public static void main(String[] args) {
 		
-		Option videofile = Option.builder("v").required(true).longOpt("video_input").desc("The video file for tethering.").hasArg().build();
+		Option videofile = Option.builder("v").required(false).longOpt("video_input").desc("The video file for tethering.").hasArg().build();
 		Option transcriptfile = Option.builder("t").required(true).longOpt("transcript_input").desc("The transcript file for the video.").hasArg().build();
 		
 		Option outputdir = Option.builder("o").required(false).longOpt("output_path").desc("(Optional) The output directory for [target].srt, the default place is the current folder.").hasArg().build();
@@ -55,20 +55,30 @@ public class Command {
 			
 			if(line.hasOption('v') && line.getOptionValue("video_input")!= null &&
 					line.hasOption('t') && line.getOptionValue("transcript_input")!= null) {
-				System.out.format("|--> The video file is located at <%s>\n", line.getOptionValue("video_input"));
-				System.out.format("|--> The transcript file is located at <%s>\n", line.getOptionValue("transcript_input"));   
+				System.out.format("--> The video file is located at <%s>\n", line.getOptionValue("video_input"));
+				System.out.format("--> The transcript file is located at <%s>\n", line.getOptionValue("transcript_input"));   
+				ApiExample.execute(line.getOptionValue("video_input")
+						,line.getOptionValue("transcript_input")
+						,line.getOptionValue("output_path",System.getProperty("user.dir"))
+						,line.getOptionValue("credential")
+						,line.getOptionValue("language","en"),false);
+			} else if(line.hasOption('i') && line.getOptionValue("videoId")!= null &&
+					line.hasOption('t') && line.getOptionValue("transcript_input")!= null) {
+				System.out.format("--> The existing youtube video id is <%s>\n", line.getOptionValue("videoId"));
+				System.out.format("--> The transcript file is located at <%s>\n", line.getOptionValue("transcript_input"));   
+				ApiExample.execute(null
+						,line.getOptionValue("transcript_input")
+						,line.getOptionValue("output_path",System.getProperty("user.dir"))
+						,line.getOptionValue("credential")
+						,line.getOptionValue("language","en"),true, line.getOptionValue("videoId"));
 			}
-			
+			/*
 			if(line.hasOption('o') && line.getOptionValue("output_path")!= null)
-				System.out.format("|--> The output folder is at <%s>\n", line.getOptionValue("output_path"));
+				System.out.format("--> The output folder is at <%s>\n", line.getOptionValue("output_path"));
 			if(line.hasOption('c') && line.getOptionValue("credential")!= null)
-				System.out.format("|--> The credential file is located at <%s>\n", line.getOptionValue("credential"));   
+				System.out.format("--> The credential file is located at <%s>\n", line.getOptionValue("credential"));   
+			*/
 			
-			ApiExample.execute(line.getOptionValue("video_input")
-					,line.getOptionValue("transcript_input")
-					,line.getOptionValue("output_path",System.getProperty("user.dir"))
-					,line.getOptionValue("credential")
-					,line.getOptionValue("language","en"));
 			
 		} catch (org.apache.commons.cli.ParseException e) {
 			// TODO Auto-generated catch block

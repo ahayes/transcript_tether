@@ -63,6 +63,9 @@ public class ApiExample {
     private static HttpTransport HTTP_TRANSPORT;
     
     protected static String VIDEOFILE = null;
+    protected static String EXISTINGVIDEOID = null;
+    
+    protected static String VIDEOID = null;
     protected static String TRANSCRIPTFILE = null;
     protected static String OUTPUTFILE = null;
     protected static String CREDENTIALFILE = null;
@@ -115,7 +118,7 @@ public class ApiExample {
     protected static void execute(String videoFile, 
     		String transcriptFile, String outputPath, 
     		String credential,
-    		String lang)  {
+    		String lang, boolean hasUploadedVideoID, String...videoId)  {
    
     	File savedCredential = new File(CREDENTIALFILE_INTERNAL);
     	if(credential == null) {
@@ -136,53 +139,74 @@ public class ApiExample {
     		
     	}
        // YouTube youtube = getYouTubeService();
+    	if(hasUploadedVideoID) {
+    		if(videoId.length >0 && videoId[0] != null)
+    			EXISTINGVIDEOID = videoId[0];
+    		else {
+    			System.err.println("The existing videoId is not here");
+    			System.exit(1);
+    		}
+    	}
+    		
     	
-    	VIDEOFILE = videoFile;
     	TRANSCRIPTFILE = transcriptFile;
     	
     	
     	String outputFileDir = outputPath;
 		if(outputPath.charAt(outputPath.length()-1) != '/')
 			outputFileDir += '/';
-		String tmpfile = new File(VIDEOFILE).getName();
+		if(!hasUploadedVideoID) {
+			VIDEOFILE = videoFile;
+			String tmpfile = new File(VIDEOFILE).getName();
 		
-		String inputNameWithoutExt = tmpfile.lastIndexOf('.')>0?  tmpfile.substring(0,tmpfile.lastIndexOf('.')) : tmpfile ;
-		OUTPUTFILE = outputFileDir + inputNameWithoutExt + ".srt";
+			String inputNameWithoutExt = tmpfile.lastIndexOf('.')>0?  tmpfile.substring(0,tmpfile.lastIndexOf('.')) : tmpfile ;
+			OUTPUTFILE = outputFileDir + inputNameWithoutExt + ".srt";
+		} else {
+				 
+				OUTPUTFILE = outputFileDir + EXISTINGVIDEOID + ".srt";
 
+		}
         try {
             YouTube youtube = getYouTubeService();
-
-            VideoProcessor vidp = new VideoProcessor(youtube);
-            vidp.execute();
-            System.out.println("VideoId is: "+ vidp.getVideoId());
+           
+            if(!hasUploadedVideoID) {
+            	VideoProcessor vidp = new VideoProcessor(youtube);
+            	vidp.execute();
+            	VIDEOID = vidp.getVideoId();
+            	System.out.println("VideoId is: "+ VIDEOID);
+            } else {
+            	VIDEOID = EXISTINGVIDEOID;
+            	System.out.println("The existing VideoId is: "+ VIDEOID);
+            	
+            }
             CaptionProcessor capp = new CaptionProcessor(youtube);
             LANGUAGE curLanguage = LANGUAGE.valueOf(lang.toUpperCase());
             Caption uploadedCaptionResponse =null;
             String transcript_file_name_onyoutube = new File(TRANSCRIPTFILE).getName();
             switch(curLanguage) {
             case EN:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(VIDEOID, "en",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	break;
             case FR:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "fr",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(VIDEOID, "fr",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	break;
             case ES:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "es",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(VIDEOID, "es",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	break;
             case IT:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "it",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(VIDEOID, "it",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	break;
             case ZHCN:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "zh-CN",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(VIDEOID, "zh-CN",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
         		break;
             case DE:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "de",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(VIDEOID, "de",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
         		break;
             case JA:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "ja",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(VIDEOID, "ja",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
         		break;
             default:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(VIDEOID, "en",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	
             
             }
@@ -197,7 +221,7 @@ public class ApiExample {
             	while(pb1.showProgress == true){
                 // do some activities
             		
-            		Caption caption = capp.listCaption(vidp.getVideoId(), captionId);
+            		Caption caption = capp.listCaption(VIDEOID, captionId);
             		if(caption != null) {
             			Thread.sleep(60000);
             			String captionSyncStatus =  caption.getSnippet().getStatus();    
@@ -229,7 +253,7 @@ public class ApiExample {
             //https://www.youtube.com/timedtext_editor?v=5WRBROTmW4I&lang=en&name=
             
             
-            String finalTuneUrl = "https://www.youtube.com/timedtext_editor?v="+vidp.getVideoId()+"&lang=en&name="
+            String finalTuneUrl = "https://www.youtube.com/timedtext_editor?v="+VIDEOID+"&lang=en&name="
                     + transcript_file_name_onyoutube +"&kind=&contributor_id=0&bl=vmp&action_view_track=1&sow=yes&ui=se";
             System.out.println("The transcript can be fine-tuned at:"+ "\""+ finalTuneUrl + "\"");
            
