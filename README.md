@@ -31,3 +31,9 @@ The executable is located inside {PROJECT_FOLDER}/build/libs/
 ## Example
 
 > java -jar transcript_tether-x.y.z.jar -v 'test.mp4' -t 'test.txt' -c 'HOME/.client_secret.json'
+
+## FAQ
+1. The youtube video length limitation
+Ans: Verification to GOOGLE at "https://www.youtube.com/my_videos_upload_verify"
+
+2. The video should be uploaded to the same youtube account, the youtube account authorizes the API.

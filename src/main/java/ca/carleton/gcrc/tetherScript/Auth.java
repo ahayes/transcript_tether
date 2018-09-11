@@ -44,7 +44,7 @@ public class Auth {
     /**
      * This is the directory that will be used under the user's home directory where OAuth tokens will be stored.
      */
-    private static final String CREDENTIALS_DIRECTORY = ".dataapi3credentials";
+    private static final String CREDENTIALS_DIRECTORY = ".youtubeapi3credentials";
     
 
     private static final Collection<String> SCOPES = Arrays.asList("https://www.googleapis.com/auth/youtube.force-ssl");
@@ -85,8 +85,14 @@ public class Auth {
     }
     
     
-    private static boolean isSameCredentialJson(String l_json, String r_json) {
+    private static boolean isSameCredentialJson(String l_json, String r_json) throws IOException {
     	try {
+    		File lfile = new File(l_json);
+    		File rfile = new File(r_json);
+    		if( !rfile.exists())
+    			return false;
+    		if(!lfile.exists())
+    			throw new IOException();
     		Reader l_clientSecretReader = new InputStreamReader(new FileInputStream(l_json ));
     		GoogleClientSecrets l_clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, l_clientSecretReader);
     		Reader r_clientSecretReader = new InputStreamReader(new FileInputStream(r_json ));

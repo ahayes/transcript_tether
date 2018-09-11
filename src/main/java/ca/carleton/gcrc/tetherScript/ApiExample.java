@@ -100,7 +100,7 @@ public class ApiExample {
     public static YouTube getYouTubeService() {
     	Credential credential =null ;
     	try {
-         credential = Auth.authorize(CREDENTIALFILE, "./");
+         credential = Auth.authorize(CREDENTIALFILE, "tether");
 
     	}catch(IOException e)
     	{
@@ -260,7 +260,8 @@ public class ApiExample {
             openInBrowser(finalTuneUrl);
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
-            System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
+            if(e.getDetails().getMessage().endsWith("parameter could not be found."))
+            	System.err.println("The video doesnot exist, two potential causes: 1. length limitation 2. duplicated video");
         } catch (Throwable t) {
             t.printStackTrace();
         }

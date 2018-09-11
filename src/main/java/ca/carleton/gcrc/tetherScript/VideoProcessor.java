@@ -4,7 +4,9 @@ package ca.carleton.gcrc.tetherScript;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Locale;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -88,7 +90,7 @@ public void execute() {
 
         MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
             public void progressChanged(MediaHttpUploader uploader) throws IOException {
-            	String anim  = "|>>>>>>>>>>>>>>>>>>>>>>>>>>>>|";
+            	String anim  = "----------------->";
             	                
                 switch (uploader.getUploadState()) {
                     case INITIATION_STARTED:
@@ -99,11 +101,14 @@ public void execute() {
                         break;
                     case MEDIA_IN_PROGRESS:
                         //System.out.println("Video --Upload in progress");
-                        System.out.print("\rVideo --Upload in progress: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
+                    	String percentage =  NumberFormat.getPercentInstance(Locale.US).format(uploader.getProgress());
+                        
+                        System.out.format("\rVideo --Upload Percentage: %3s  |%-18s|" , percentage,  anim.substring( anim.length()-(int)(uploader.getProgress()*anim.length()), anim.length()) );
                         break;
                     case MEDIA_COMPLETE:
-                    	System.out.print("\rVideo --Upload finished: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
-                        System.out.println("| Video --Upload Completed!");
+                    	percentage =  NumberFormat.getPercentInstance(Locale.US).format(uploader.getProgress());
+                    	System.out.format("\rVideo --Upload Percentage: %3s  |%-18s|" , percentage,  anim.substring( anim.length()-(int)(uploader.getProgress()*anim.length()), anim.length()) );
+                        System.out.println(" Video --Upload Completed!");
                         break;
                     case NOT_STARTED: 
                         System.out.println("Video --Upload Not Started!");

@@ -41,9 +41,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Locale;
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;
 
@@ -323,7 +324,7 @@ public class CaptionProcessor {
       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
       LocalDateTime now = LocalDateTime.now();
       
-      System.out.print("\r                      Last Check at: "+ dtf.format(now));
+      System.out.print("\r                               |Last Check at: "+ dtf.format(now));
       for (Caption caption : captions) {
     	  if(caption.getId().equals(captionId)) {
     		  captionRes = caption;
@@ -347,6 +348,7 @@ public class CaptionProcessor {
      */
     protected Caption uploadCaption(String videoId, String captionLanguage,
         String captionName, File captionFile) throws IOException {
+    	System.err.println("https://www.youtube.com/watch?v="+ videoId);
       // Add extra information to the caption before uploading.
       Caption captionObjectDefiningMetadata = new Caption();
 
@@ -392,7 +394,7 @@ public class CaptionProcessor {
       MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
           @Override
           public void progressChanged(MediaHttpUploader uploader) throws IOException {
-        	  String anim  = "|>>>>>>>>>>>>>>>>>>>>>>>>>>>>|";
+        	  String anim  = "----------------->";
               switch (uploader.getUploadState()) {
                   // This value is set before the initiation request is
                   // sent.
@@ -407,14 +409,16 @@ public class CaptionProcessor {
                   // This value is set after a media file chunk is
                   // uploaded.
                   case MEDIA_IN_PROGRESS:
-                	  System.out.print("\rCaption --Upload in progress: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) + " " );
+                	  String percentage =  NumberFormat.getPercentInstance(Locale.US).format(uploader.getProgress());
+                	  System.out.format("\rCaption --Upload Percentage: %3s  |%-18s|" , percentage,  anim.substring( anim.length()-(int)(uploader.getProgress()*anim.length()), anim.length()) );
                       //System.out.println("Caption --Upload percentage: " + uploader.getProgress());
                       break;
                   // This value is set after the entire media file has
                   //  been successfully uploaded.
                   case MEDIA_COMPLETE:
-                	  System.out.print("\rCaption --Upload finished: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
-                      System.out.println("| Caption --Upload Completed!");
+                	  percentage =  NumberFormat.getPercentInstance(Locale.US).format(uploader.getProgress());
+                	  System.out.format("\rCaption --Upload Percentage: %3s  |%-18s|" , percentage,  anim.substring( anim.length()-(int)(uploader.getProgress()*anim.length()), anim.length()) );
+                      System.out.println(" Caption --Upload Completed!");
                       break;
                   // This value indicates that the upload process has
                   //  not started yet.
