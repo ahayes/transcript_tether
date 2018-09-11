@@ -52,10 +52,7 @@ public class ApiExample {
     /** Application name. */
     public static final String APPLICATION_NAME = "API Sample";
 
-    /** Directory to store user credentials for this application. */
-    private static final java.io.File DATA_STORE_DIR = new java.io.File(
-    System.getProperty("user.home"), ".credentials/java-youtube-api");
-
+   
     /** Global instance of the {@link FileDataStoreFactory}. */
     //private static FileDataStoreFactory DATA_STORE_FACTORY;
 
@@ -100,7 +97,7 @@ public class ApiExample {
     public static YouTube getYouTubeService() {
     	Credential credential =null ;
     	try {
-         credential = Auth.authorize(CREDENTIALFILE, "tether_transcript");
+         credential = Auth.authorize(CREDENTIALFILE, "./");
 
     	}catch(IOException e)
     	{
@@ -161,30 +158,31 @@ public class ApiExample {
             CaptionProcessor capp = new CaptionProcessor(youtube);
             LANGUAGE curLanguage = LANGUAGE.valueOf(lang.toUpperCase());
             Caption uploadedCaptionResponse =null;
+            String transcript_file_name_onyoutube = new File(TRANSCRIPTFILE).getName();
             switch(curLanguage) {
             case EN:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	break;
             case FR:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "fr","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "fr",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	break;
             case ES:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "es","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "es",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	break;
             case IT:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "it","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "it",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	break;
             case ZHCN:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "zh-CN","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "zh-CN",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
         		break;
             case DE:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "de","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "de",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
         		break;
             case JA:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "ja","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "ja",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
         		break;
             default:
-            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en","plain_transcript_n2",new File(TRANSCRIPTFILE) );
+            	uploadedCaptionResponse = capp.uploadCaption(vidp.getVideoId(), "en",transcript_file_name_onyoutube,new File(TRANSCRIPTFILE) );
             	
             
             }
@@ -209,6 +207,11 @@ public class ApiExample {
             				pb1.showProgress = false;
             				break;
             			}
+            		} else {
+            			
+            			System.err.println("The caption doesn't exist");
+            			System.exit(1);
+            			
             		}
          
             				
@@ -227,7 +230,7 @@ public class ApiExample {
             
             
             String finalTuneUrl = "https://www.youtube.com/timedtext_editor?v="+vidp.getVideoId()+"&lang=en&name="
-                    + "plain_transcript_n2&kind=&contributor_id=0&bl=vmp&action_view_track=1&sow=yes&ui=se";
+                    + transcript_file_name_onyoutube +"&kind=&contributor_id=0&bl=vmp&action_view_track=1&sow=yes&ui=se";
             System.out.println("The transcript can be fine-tuned at:"+ "\""+ finalTuneUrl + "\"");
            
             openInBrowser(finalTuneUrl);

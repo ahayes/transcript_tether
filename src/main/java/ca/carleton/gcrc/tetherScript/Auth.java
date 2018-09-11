@@ -44,7 +44,7 @@ public class Auth {
     /**
      * This is the directory that will be used under the user's home directory where OAuth tokens will be stored.
      */
-    private static final String CREDENTIALS_DIRECTORY = ".credentials";
+    private static final String CREDENTIALS_DIRECTORY = ".dataapi3credentials";
     
 
     private static final Collection<String> SCOPES = Arrays.asList("https://www.googleapis.com/auth/youtube.force-ssl");
@@ -57,7 +57,7 @@ public class Auth {
     public static Credential authorize( String client_secret_json, String credentialDatastore) throws IOException {
 
         // Load client secrets.
-    	if(!client_secret_json.equals( ApiExample.CREDENTIALFILE_INTERNAL)) {
+    	if(!isSameCredentialJson(client_secret_json, ApiExample.CREDENTIALFILE_INTERNAL)) {
      
     		overrideOldInternalCred(ApiExample.CREDENTIALFILE_INTERNAL, client_secret_json);
     		
@@ -67,15 +67,9 @@ public class Auth {
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
 
         // Checks that the defaults have been replaced (Default = "Enter X here").
-        if (clientSecrets.getDetails().getClientId().startsWith("Enter")
-                || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
-            System.out.println(
-                    "Enter Client ID and Secret from https://console.developers.google.com/project/_/apiui/credential "
-                            + "into src/main/resources/client_secrets.json");
-            System.exit(1);
-        }
+       
 
-        // This creates the credentials datastore at ~/.credentials/${credentialDatastore}
+        // This creates the credential datastore at ~/.credentials/${credentialDatastore}
         FileDataStoreFactory fileDataStoreFactory = new FileDataStoreFactory(new File(System.getProperty("user.home") + "/" + CREDENTIALS_DIRECTORY));
         DataStore<StoredCredential> datastore = fileDataStoreFactory.getDataStore(credentialDatastore);
 
@@ -90,6 +84,22 @@ public class Auth {
         return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
     }
     
+    
+    private static boolean isSameCredentialJson(String l_json, String r_json) {
+    	try {
+    		Reader l_clientSecretReader = new InputStreamReader(new FileInputStream(l_json ));
+    		GoogleClientSecrets l_clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, l_clientSecretReader);
+    		Reader r_clientSecretReader = new InputStreamReader(new FileInputStream(r_json ));
+    		GoogleClientSecrets r_clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, r_clientSecretReader);
+        
+    		return l_clientSecrets.getDetails().getClientId().equals(r_clientSecrets.getDetails().getClientId());
+    	} catch(Exception e) {
+    		e.printStackTrace();	
+    		System.exit(1);
+    		return false;
+    	}
+        
+    }
     private static void overrideOldInternalCred(String dst, String srt) throws IOException{
     	   InputStream is = null;
     	    OutputStream os = null;

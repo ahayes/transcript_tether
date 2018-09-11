@@ -314,7 +314,7 @@ public class CaptionProcessor {
     	  captions = captionListResponse.getItems();
       }catch (GoogleJsonResponseException e) {
     	  System.err.println(e.getDetails());
-    	  System.err.println("You may have uploaded the same video, please double check on youtube video manager");
+    	  System.err.println("The videoId is invalid. It can be either a duplicated video or video length error. Please double check on youtube video manager");
     	  System.exit(1);
       }
       Caption captionRes = null;
@@ -392,7 +392,7 @@ public class CaptionProcessor {
       MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
           @Override
           public void progressChanged(MediaHttpUploader uploader) throws IOException {
-        	  String anim  = ">>>>>>>>>>>>>>>>>>>";
+        	  String anim  = "|>>>>>>>>>>>>>>>>>>>>>>>>>>>>|";
               switch (uploader.getUploadState()) {
                   // This value is set before the initiation request is
                   // sent.
@@ -407,13 +407,13 @@ public class CaptionProcessor {
                   // This value is set after a media file chunk is
                   // uploaded.
                   case MEDIA_IN_PROGRESS:
-                	  System.out.print("\rCaption --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) + " " );
+                	  System.out.print("\rCaption --Upload in progress: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) + " " );
                       //System.out.println("Caption --Upload percentage: " + uploader.getProgress());
                       break;
                   // This value is set after the entire media file has
                   //  been successfully uploaded.
                   case MEDIA_COMPLETE:
-                	  System.out.print("\rCaption --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
+                	  System.out.print("\rCaption --Upload finished: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
                       System.out.println("| Caption --Upload Completed!");
                       break;
                   // This value indicates that the upload process has

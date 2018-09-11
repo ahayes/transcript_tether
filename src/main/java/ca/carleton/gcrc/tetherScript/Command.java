@@ -21,12 +21,15 @@ public class Command {
 	public static void main(String[] args) {
 		
 		Option videofile = Option.builder("v").required(true).longOpt("video_input").desc("The video file for tethering.").hasArg().build();
-		Option transcriptfile = Option.builder("t").required(true).longOpt("transcript_input").desc("(Optional) The transcript file for the video.").hasArg().build();
+		Option transcriptfile = Option.builder("t").required(true).longOpt("transcript_input").desc("The transcript file for the video.").hasArg().build();
+		
 		Option outputdir = Option.builder("o").required(false).longOpt("output_path").desc("(Optional) The output directory for [target].srt, the default place is the current folder.").hasArg().build();
 		Option credential = Option.builder("c").required(false).longOpt("credential").desc("Provide credential file for google api.").hasArg().build();
-		Option language = Option.builder("l").required(false).longOpt("language").desc("(Optional) Indicate the language used in the video [en|fr|de|ja|es|it|zhcn]").hasArg().build();
-		Option recursiveTethering = Option.builder("r").required(false).longOpt("recursive").desc("If provided, recursive tethering all the video and transcript(same-name) in provided folder")
-				.hasArg().build();
+		Option language = Option.builder("l").required(false).longOpt("language").desc("Indicate the language used in the video [en|fr|de|ja|es|it|zhcn]").hasArg().build();
+		Option videoId = Option.builder("i").required(false).longOpt("videoId").desc("The videoId of the video on youtube"
+				+ "you can find out the videoId through: url: https://youtu.be/{VIDEOID} or url: https://www.youtube.com/watch?v={VIDEOID}").hasArg().build();
+		//Option recursiveTethering = Option.builder("r").required(false).longOpt("recursive").desc("If provided, recursive tethering all the video and transcript(same-name) in provided folder")
+			//	.hasArg().build();
 		
 		Options options = new Options();
 		options.addOption(videofile);
@@ -34,19 +37,13 @@ public class Command {
 		options.addOption(outputdir);
 		options.addOption(credential);
 		options.addOption(language);
-		options.addOption(recursiveTethering);
+		options.addOption(videoId);
+		//options.addOption(recursiveTethering);
 		String header = "Transcript tethering tool. \n\n";
-		String footer = "\nYou need a google credential to execute this program, please provide your credential file (.json)."
-		+
-		"\nThe credential file can be created and retrieved at: \n" 
-		+
-		"\"https://console.cloud.google.com/apis/credentials\" "
-		+
-		"\n \"Create Credentials\" ==> \"OAuth client ID\" ==> \"Other\" ==> \"Create\""
-		+
-		"\nDownload the credential file to your local folder. "
-		+ 
-		"\nExecute this program again with option: '-c {path_to_credential_file}'. \n";
+		String footer = "Example: -- \n"
+				+ "java -jar transcript_tether-x.y.z.jar -v 'test.mp4' -t 'test.txt' -c 'client_secret.json' \n"
+				+ "java -jar transcript_tether-x.y.z.jar -i 'youtubeID' -t 'test.txt' \n";
+		
 		
 		HelpFormatter formatter = new HelpFormatter();
 		CommandLineParser parser = new DefaultParser();
@@ -76,7 +73,7 @@ public class Command {
 		} catch (org.apache.commons.cli.ParseException e) {
 			// TODO Auto-generated catch block
 			System.err.println("Parsing failed. Reason: " + e.getMessage());
-			formatter.printHelp("teh",header,  options, "\n", true);
+			formatter.printHelp("java -jar transcript_tether.jar",header,  options, footer, true);
 		}
 		
 		

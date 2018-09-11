@@ -61,6 +61,7 @@ public void execute() {
         String mime_type = "video/*";
         String media_filename = ApiExample.VIDEOFILE; //"Massively multi-player.mp4";
         File media_file = new File(media_filename);
+        String media_file_name_onyoutube = media_file.getName();
         //final long bytes = media_file.length();
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("part", "snippet,status");
@@ -70,7 +71,7 @@ public void execute() {
         VideoSnippet snippet = new VideoSnippet();
         snippet.set("categoryId", "22");
         snippet.set("description", "Description of uploaded video.");
-        snippet.set("title", "Test video upload");
+        snippet.set("title", media_file_name_onyoutube);
         VideoStatus status = new VideoStatus();
         status.set("privacyStatus", "private");
 
@@ -87,7 +88,7 @@ public void execute() {
 
         MediaHttpUploaderProgressListener progressListener = new MediaHttpUploaderProgressListener() {
             public void progressChanged(MediaHttpUploader uploader) throws IOException {
-            	String anim  = ">>>>>>>>>>>>>>>>>>>";
+            	String anim  = "|>>>>>>>>>>>>>>>>>>>>>>>>>>>>|";
             	                
                 switch (uploader.getUploadState()) {
                     case INITIATION_STARTED:
@@ -98,10 +99,10 @@ public void execute() {
                         break;
                     case MEDIA_IN_PROGRESS:
                         //System.out.println("Video --Upload in progress");
-                        System.out.print("\rVideo --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
+                        System.out.print("\rVideo --Upload in progress: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
                         break;
                     case MEDIA_COMPLETE:
-                    	System.out.print("\rVideo --Upload percentage: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
+                    	System.out.print("\rVideo --Upload finished: " +  anim.substring(0, (int)(uploader.getProgress()*anim.length())) );
                         System.out.println("| Video --Upload Completed!");
                         break;
                     case NOT_STARTED: 

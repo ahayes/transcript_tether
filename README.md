@@ -10,7 +10,7 @@ To create a standalone executable java program:
 
 > gradle exec
 
-The executable is located inside {PROJECT_FOLDER}/build/lib/
+The executable is located inside {PROJECT_FOLDER}/build/libs/
 
 # Running_prerequisition
 
