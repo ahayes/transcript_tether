@@ -10,6 +10,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
+import com.google.api.client.http.HttpStatusCodes;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -35,6 +36,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
+
 
 public class ApiExample {
 
@@ -43,6 +46,7 @@ public class ApiExample {
 			"The credential file can be created and retrieved at: \n" 
 			+
 			"\"https://console.cloud.google.com/apis/credentials\" "
+			+"Follow the google instruction, enter your info and \"Create project\""
 			+
 			"\n \"Create Credentials\" ==> \"OAuth client ID\" ==> \"Other\" ==> \"Create\""
 			+
@@ -259,11 +263,30 @@ public class ApiExample {
            
             openInBrowser(finalTuneUrl);
         } catch (GoogleJsonResponseException e) {
-            e.printStackTrace();
-            if(e.getDetails().getMessage().endsWith("parameter could not be found."))
-            	System.err.println("The video doesnot exist, two potential causes: 1. length limitation 2. duplicated video");
+            //e.printStackTrace();
+            System.err.println("HTTP ERROR CODE: "+e.getStatusCode());
+            switch (e.getStatusCode()) {
+            	case 401:
+            		System.err.println("[INFO] If you have a brand new youtube account, you need to create a channel, so that this program can upload content.");
+        			openInBrowser("https://www.youtube.com/create_channel");
+        			System.err.println("[INFO] Also, please verify your youtube account at \"https://www.youtube.com/verify\" ");
+        			break;
+            	default: 
+            		if(e.getDetails().getMessage().endsWith("parameter could not be found.")) {
+            			System.err.println("[INFO] The video doesnot exist, two potential causes: 1. length limitation 2. duplicated video");
+            		} else if(e.getDetails().getMessage().startsWith("Access Not Configured. YouTube Data API"))
+            		{
+            			String enableAPIURL = (String) e.getDetails().getErrors().get(0).get("extendedHelp");
+            			
+            			System.err.println("[INFO] The youtube data API needs to be enabled at this website: " + enableAPIURL);
+            			openInBrowser(enableAPIURL);
+            		} else if (Integer.valueOf(e.getStatusCode()).compareTo(401)==0){
+            	
+            			
+            		}
+            }
         } catch (Throwable t) {
-            t.printStackTrace();
+            //t.printStackTrace();
         }
     }
     private static void openInBrowser(String url) {

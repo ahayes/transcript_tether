@@ -314,9 +314,19 @@ public class CaptionProcessor {
       
     	  captions = captionListResponse.getItems();
       }catch (GoogleJsonResponseException e) {
-    	  System.err.println(e.getDetails());
-    	  System.err.println("The videoId is invalid. It can be either a duplicated video or video length error. Please double check on youtube video manager");
+    	  if(e.getStatusCode() == 404 && e.getDetails().getMessage().endsWith("not be found.")) {
+    	  
+    		  System.err.println("The videoId is invalid.                                 \n"
+    				  +"There are two possible causes:        \n"
+    				  + "           1. A duplicated video (double check on your video manager\n"
+    				  + "Delete the duplicated video, leave the original video on youtube, \n"
+    				  + "and use \"-i {original-video-id} -t {transcript}\" flags to perform the tethering).\n"
+    				  + ""
+    				  + "           2. Video length error (verified at: https://www.youtube.com/verify\n"
+    				  + "and rerun the program).\n "
+    				  );
     	  System.exit(1);
+    	  }
       }
       Caption captionRes = null;
       // Print information from the API response.

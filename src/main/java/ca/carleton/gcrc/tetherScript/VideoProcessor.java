@@ -56,10 +56,10 @@ public class VideoProcessor {
 	
 	
 	
-public void execute() {
+public void execute() throws GoogleJsonResponseException, IOException {
 		
 		
-	try {
+	
         String mime_type = "video/*";
         String media_filename = ApiExample.VIDEOFILE; //"Massively multi-player.mp4";
         File media_file = new File(media_filename);
@@ -119,15 +119,13 @@ public void execute() {
         uploader.setProgressListener(progressListener);
         Video response = videosInsertRequest.execute();
         VideoId = response.getId();
-//TODO ADD video duplication checking
+
 
         //System.out.println("UPLOADINFO_---- ");
-	}catch (GoogleJsonResponseException e) {
-        e.printStackTrace();
-        System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
-    } catch (Throwable t) {
-        t.printStackTrace();
-    }
+	//}catch (GoogleJsonResponseException e) {
+      //  e.printStackTrace();
+       // System.err.println("There was a service error: " + e.getDetails().getCode() + " : " + e.getDetails().getMessage());
+  
 		
 		
 	}

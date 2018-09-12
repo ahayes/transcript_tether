@@ -43,5 +43,5 @@ The executable is located inside {PROJECT_FOLDER}/build/libs/
 
 4. The video should be uploaded to the same youtube account, the youtube account authorizes the API.
 
-5. The youtube channel needs to be enabled, since the program upload the video to users' personal channel (Privated).
+5. The youtube channel needs to be created, since the program upload the video to users' personal channel (Privated).
 
