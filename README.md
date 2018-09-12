@@ -31,6 +31,7 @@ The executable is located inside {PROJECT_FOLDER}/build/libs/
 ## Example
 
 > java -jar transcript_tether-x.y.z.jar -v 'test.mp4' -t 'test.txt' -c 'HOME/.client_secret.json'
+> java -jar transcript_tether-x.y.z.jar -i 'youtubevideoid' -t 'test.vtt'
 
 ## FAQ
 
