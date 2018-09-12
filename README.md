@@ -34,7 +34,7 @@ The executable is located inside {PROJECT_FOLDER}/build/libs/
 
 ## FAQ
 
-1. First, to install and deploy the software, you need to enable the youtube Data API v3. 
+1. First, to install and deploy the software, you need to enable the youtube Data API v3 "https://console.developers.google.com/apis/library/youtube.googleapis.com". 
 
 2. Second, at the first execution, the program will prompt up for you to create the OAUTH2.0 json file. Just follow the process, download the secret.json file and rerun the program with "-c {secret.json}". The json file will be cached to the user.home folder, so that you don't need to enter the secret info at next time.
 
@@ -42,5 +42,5 @@ The executable is located inside {PROJECT_FOLDER}/build/libs/
 
 4. The video should be uploaded to the same youtube account, the youtube account authorizes the API.
 
-5. The youtube channel needs to be enabled, because the tether process upload the video to users' personal channel (Privated).
+5. The youtube channel needs to be enabled, since the program upload the video to users' personal channel (Privated).
 
