@@ -33,7 +33,14 @@ The executable is located inside {PROJECT_FOLDER}/build/libs/
 > java -jar transcript_tether-x.y.z.jar -v 'test.mp4' -t 'test.txt' -c 'HOME/.client_secret.json'
 
 ## FAQ
-1. The youtube video length limitation
-Ans: Verification to GOOGLE at "https://www.youtube.com/my_videos_upload_verify"
 
-2. The video should be uploaded to the same youtube account, the youtube account authorizes the API.
+1. First, to install and deploy the software, you need to enable the youtube Data API v3. 
+
+2. Second, at the first execution, the program will prompt up for you to create the OAUTH2.0 json file. Just follow the process, download the secret.json file and rerun the program with "-c {secret.json}". The json file will be cached to the user.home folder, so that you don't need to enter the secret info at next time.
+
+3. The youtube uploading service has a 20 min length limitation for uploaded video. To remove this limitation, perform the verification on youtube account at "https://www.youtube.com/my_videos_upload_verify"
+
+4. The video should be uploaded to the same youtube account, the youtube account authorizes the API.
+
+5. The youtube channel needs to be enabled, because the tether process upload the video to users' personal channel (Privated).
+

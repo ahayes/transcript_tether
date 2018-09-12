@@ -324,7 +324,7 @@ public class CaptionProcessor {
       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
       LocalDateTime now = LocalDateTime.now();
       
-      System.out.print("\r                               |Last Check at: "+ dtf.format(now));
+      System.out.print("\r                               | Last Check at: "+ dtf.format(now));
       for (Caption caption : captions) {
     	  if(caption.getId().equals(captionId)) {
     		  captionRes = caption;

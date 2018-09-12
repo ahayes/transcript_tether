@@ -42,7 +42,7 @@ public class Command {
 		String header = "Transcript tethering tool. \n\n";
 		String footer = "Example: -- \n"
 				+ "java -jar transcript_tether-x.y.z.jar -v 'test.mp4' -t 'test.txt' -c 'client_secret.json' \n"
-				+ "java -jar transcript_tether-x.y.z.jar -i 'youtubeID' -t 'test.txt' \n";
+				+ "java -jar transcript_tether-x.y.z.jar -i 'youtubeID' -t 'test.txt' \n\n";
 		
 		
 		HelpFormatter formatter = new HelpFormatter();

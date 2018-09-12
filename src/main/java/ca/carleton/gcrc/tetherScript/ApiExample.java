@@ -213,7 +213,7 @@ public class ApiExample {
             
             String captionId = uploadedCaptionResponse.getId();
             System.out.println("The google synchronization engine is running, this may take a while");
-            System.out.println("Please be patient...");
+            System.out.println("Please be patient, this process can take up to 2X{video_length}...");
             System.out.println("Waiting for sync...");
             ProgressBarRotating pb1 = new ProgressBarRotating();
             pb1.start();
