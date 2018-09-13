@@ -71,6 +71,9 @@ public class Command {
 						,line.getOptionValue("output_path",System.getProperty("user.dir"))
 						,line.getOptionValue("credential")
 						,line.getOptionValue("language","en"),true, line.getOptionValue("videoId"));
+			} else {
+				System.err.println("No video source provided -- Please provide a video source videoFile or videoId");
+				System.exit(1);
 			}
 			/*
 			if(line.hasOption('o') && line.getOptionValue("output_path")!= null)
